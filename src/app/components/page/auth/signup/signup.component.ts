@@ -36,6 +36,19 @@ export class SignupComponent implements OnInit {
   specialties: string[] = [];
   selectedSpecialty: any;
 
+  quickAccess = [
+    {
+      photo: "assets/images/page/doctor.png",
+      user: "doctor_1@email.com",
+      password: 987654321
+    },
+    {
+      photo: "assets/images/page/patient.png",
+      user: "patient_1@email.com",
+      password: 123456789
+    }
+  ]
+
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group(this.controls);
     if (this.selectedProfile === 'patient') {

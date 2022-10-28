@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,62 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  private emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  private controls = {
+    'email': [null, [Validators.required, Validators.pattern(this.emailRegex)]],
+    'password': [null, [Validators.required, Validators.minLength(6)]]
+  }
+  formGroup: FormGroup;
+  user: any;
+  password: any;
+
+  quickAccess = [
+    {
+      photo: "assets/images/page/doctor.png",
+      user: "doctor_1@email.com",
+      password: 123456789
+    },
+    {
+      photo: "assets/images/page/doctor.png",
+      user: "doctor_2@email.com",
+      password: 123456789
+    },
+    {
+      photo: "assets/images/page/patient.png",
+      user: "patient_1@email.com",
+      password: 123456789
+    },
+    {
+      photo: "assets/images/page/patient.png",
+      user: "patient_2@email.com",
+      password: 123456789
+    },
+    {
+      photo: "assets/images/page/patient.png",
+      user: "patient_3@email.com",
+      password: 123456789
+    },
+    {
+      photo: "assets/images/page/admin.png",
+      user: "admin@email.com",
+      password: 123456789
+    }
+  ]
+
+  constructor(private formBuilder: FormBuilder) {
+    this.formGroup = this.formBuilder.group(this.controls);
+  }
+
 
   ngOnInit(): void {
   }
 
+  login() {
+    console.log(this.formGroup.value)
+  }
+
+  onLogin(user: any, password: any) {
+    this.user = user;
+    this.password = password;
+  }
 }
