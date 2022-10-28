@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -11,7 +11,7 @@ export class SignupComponent implements OnInit {
   titleAlert: string = 'This field is required';
   post: any = '';
   selectedProfile: any = 'patient';
-  specialties = [{value: ""}]
+  sent = false;
   profiles = [
     {
       name: "patient",
@@ -22,16 +22,26 @@ export class SignupComponent implements OnInit {
       description: "Especialista"
     }
   ];
+  private emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  private idNumberRegex: RegExp = /[^a-z ]\ *([.0-9])*\d/g
+  private controls = {
+    'email': [null, [Validators.required, Validators.pattern(this.emailRegex)]],
+    'firstName': [null, [Validators.required, Validators.minLength(3)]],
+    'lastName': [null, [Validators.required, Validators.minLength(3)]],
+    'age': [null, [Validators.required, Validators.min(1), Validators.max(100)]],
+    'idNumber': [null, [Validators.required, Validators.pattern(this.idNumberRegex), Validators.minLength(8), Validators.maxLength(8)]],
+    'password': [null, [Validators.required, Validators.minLength(6)]],
+    'image1': [null, Validators.required]
+  }
+  specialties: string[] = [];
+  selectedSpecialty: any;
 
   constructor(private formBuilder: FormBuilder) {
-    const emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    this.formGroup = this.formBuilder.group({
-      'email': [null, [Validators.required, Validators.pattern(emailregex)]],
-      'name': [null, Validators.required],
-      'password': [null, Validators.required],
-      'description': [null, [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
-      'validate': ''
-    });
+    this.formGroup = this.formBuilder.group(this.controls);
+    if (this.selectedProfile === 'patient') {
+      this.formGroup.addControl('image2', this.formBuilder.control('', [Validators.required]));
+      this.formGroup.addControl('social-work', this.formBuilder.control('', [Validators.required]));
+    }
   }
 
   ngOnInit(): void {
@@ -43,18 +53,39 @@ export class SignupComponent implements OnInit {
 
   onSubmit(form: any) {
     console.log(form.value)
-
   }
 
   onChangeProfile(profile: any) {
     this.selectedProfile = profile.name;
+    if (this.selectedProfile === 'patient') {
+      this.formGroup.addControl('image2', this.formBuilder.control('', [Validators.required]));
+      this.formGroup.addControl('social-work', this.formBuilder.control('', [Validators.required]));
+    } else {
+      this.formGroup.removeControl('image2');
+      this.formGroup.removeControl('social-work');
+    }
   }
 
-  removeSpecialty() {
-    this.specialties.pop()
+  addSpecialty() {
+    this.pushIfNotExists(this.selectedSpecialty)
   }
 
-  addSpecialty(){
-    this.specialties.push({value: ""});
+  register() {
+    console.log(this.formGroup.value);
+    this.sent = true;
+  }
+
+  pushIfNotExists(specialty: any) {
+    if (this.specialties.indexOf(specialty) === -1) {
+      this.specialties.push(specialty)
+    }
+  }
+
+  isValidForm() {
+    return !this.formGroup.valid || this.specialties.length === 0;
+  }
+
+  deleteSpecialty(specialty: string) {
+    this.specialties = this.specialties.filter(s => s !== specialty);
   }
 }

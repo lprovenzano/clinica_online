@@ -17,6 +17,7 @@ import {FooterComponent} from "./components/page/footer/footer.component";
     AppRoutingModule
   ],
   providers: [],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
