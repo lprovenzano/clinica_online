@@ -52,8 +52,7 @@ export class SignupComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group(this.controls);
     if (this.selectedProfile === 'patient') {
-      this.formGroup.addControl('image2', this.formBuilder.control('', [Validators.required]));
-      this.formGroup.addControl('social-work', this.formBuilder.control('', [Validators.required]));
+      this.addPatientControls();
     }
   }
 
@@ -70,17 +69,14 @@ export class SignupComponent implements OnInit {
 
   onChangeProfile(profile: any) {
     this.selectedProfile = profile.name;
-    if (this.selectedProfile === 'patient') {
-      this.formGroup.addControl('image2', this.formBuilder.control('', [Validators.required]));
-      this.formGroup.addControl('social-work', this.formBuilder.control('', [Validators.required]));
-    } else {
-      this.formGroup.removeControl('image2');
-      this.formGroup.removeControl('social-work');
-    }
+    this.selectedProfile === 'patient' ? this.addPatientControls() : this.removePatientControls();
+
   }
 
   addSpecialty() {
-    this.pushIfNotExists(this.selectedSpecialty)
+    if (this.selectedSpecialty) {
+      this.pushIfNotExists(this.selectedSpecialty)
+    }
   }
 
   register() {
@@ -100,5 +96,15 @@ export class SignupComponent implements OnInit {
 
   deleteSpecialty(specialty: string) {
     this.specialties = this.specialties.filter(s => s !== specialty);
+  }
+
+  private addPatientControls() {
+    this.formGroup.addControl('image2', this.formBuilder.control('', [Validators.required]));
+    this.formGroup.addControl('social-work', this.formBuilder.control('', [Validators.required]));
+  }
+
+  private removePatientControls() {
+    this.formGroup.removeControl('image2');
+    this.formGroup.removeControl('social-work');
   }
 }
