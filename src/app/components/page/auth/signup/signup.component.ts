@@ -91,7 +91,7 @@ export class SignupComponent implements OnInit {
   }
 
   isValidForm() {
-    return !this.formGroup.valid || this.specialties.length === 0;
+    return !this.formGroup.valid;
   }
 
   deleteSpecialty(specialty: string) {
