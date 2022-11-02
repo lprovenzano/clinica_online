@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -16,6 +18,7 @@ export class LoginComponent implements OnInit {
   formGroup: FormGroup;
   user: any;
   password: any;
+  sent: boolean = false;
 
   quickAccess = [
     {
@@ -50,7 +53,7 @@ export class LoginComponent implements OnInit {
     }
   ]
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.formGroup = this.formBuilder.group(this.controls);
   }
 
@@ -59,7 +62,8 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log(this.formGroup.value)
+    this.sent = true;
+    this.authService.SignIn(this.user, this.password)
   }
 
   onLogin(user: any, password: any) {

@@ -1,5 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../../../shared/services/auth.service";
+import {Router} from "@angular/router";
+import {Role} from "../../../../shared/enums/role";
+import {Userprofile} from "../../../../shared/class/userprofile";
 
 @Component({
   selector: 'app-signup',
@@ -49,7 +53,7 @@ export class SignupComponent implements OnInit {
     }
   ]
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.formGroup = this.formBuilder.group(this.controls);
     if (this.selectedProfile === 'patient') {
       this.addPatientControls();
@@ -57,15 +61,8 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.createForm();
   }
 
-  createForm() {
-  }
-
-  onSubmit(form: any) {
-    console.log(form.value)
-  }
 
   onChangeProfile(profile: any) {
     this.selectedProfile = profile.name;
@@ -80,8 +77,15 @@ export class SignupComponent implements OnInit {
   }
 
   register() {
-    console.log(this.formGroup.value);
     this.sent = true;
+    let userProfile = new Userprofile("", this.formGroup.value.firstName, this.formGroup.value.lastName, this.formGroup.value.idNumber, this.formGroup.value.age, [this.formGroup.value.image1], this.getRole(), this.specialties, this.selectedProfile !== 'specialist')
+    if (this.selectedProfile === 'patient') {
+      userProfile.profilePhotos.push(this.formGroup.value?.image2)
+      userProfile.socialWork = this.formGroup.value.socialWork;
+    }
+    setTimeout(() => {
+      this.authService.SignUp(this.formGroup.value.email, this.formGroup.value.password, userProfile);
+    }, 2000);
   }
 
   pushIfNotExists(specialty: any) {
@@ -100,11 +104,25 @@ export class SignupComponent implements OnInit {
 
   private addPatientControls() {
     this.formGroup.addControl('image2', this.formBuilder.control('', [Validators.required]));
-    this.formGroup.addControl('social-work', this.formBuilder.control('', [Validators.required]));
+    this.formGroup.addControl('socialWork', this.formBuilder.control('', [Validators.required]));
   }
 
   private removePatientControls() {
     this.formGroup.removeControl('image2');
-    this.formGroup.removeControl('social-work');
+    this.formGroup.removeControl('socialWork');
+  }
+
+  private getRole(): Role {
+    switch (this.selectedProfile) {
+      case 'specialist': {
+        return Role.SPECIALIST;
+      }
+      case 'patient': {
+        return Role.PATIENT;
+      }
+      default: {
+        return Role.ADMIN;
+      }
+    }
   }
 }

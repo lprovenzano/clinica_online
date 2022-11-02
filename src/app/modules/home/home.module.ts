@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import {HomeComponent} from "../../components/page/home/home.component";
 import {AuthModule} from "../auth/auth.module";
+import {ClinicModule} from "../clinic/clinic.module";
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import {AuthModule} from "../auth/auth.module";
     CommonModule,
     HomeRoutingModule,
     AuthModule,
+    ClinicModule,
   ],
   providers:[]
 })
