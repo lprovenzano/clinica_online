@@ -5,6 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import {HomeComponent} from "../../components/page/home/home.component";
 import {AuthModule} from "../auth/auth.module";
 import {ClinicModule} from "../clinic/clinic.module";
+import {ImagestorageService} from "../../shared/services/imagestorage.service";
 
 
 @NgModule({
@@ -15,6 +16,6 @@ import {ClinicModule} from "../clinic/clinic.module";
     AuthModule,
     ClinicModule,
   ],
-  providers:[]
+  providers:[ImagestorageService]
 })
 export class HomeModule { }

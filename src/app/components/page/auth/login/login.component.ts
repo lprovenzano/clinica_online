@@ -23,33 +23,33 @@ export class LoginComponent implements OnInit {
   quickAccess = [
     {
       photo: "assets/images/page/doctor.png",
-      user: "doctor_1@email.com",
-      password: 123456789
+      user: "otavio.jovan@minutestep.com",
+      password: 123456
     },
     {
       photo: "assets/images/page/doctor.png",
-      user: "doctor_2@email.com",
-      password: 123456789
+      user: "noemy.freedom@minutestep.com",
+      password: 123456
     },
     {
       photo: "assets/images/page/patient.png",
-      user: "patient_1@email.com",
-      password: 123456789
+      user: "aryo.reece@minutestep.com",
+      password: 123456
     },
     {
       photo: "assets/images/page/patient.png",
-      user: "patient_2@email.com",
-      password: 123456789
+      user: "anayi.syren@minutestep.com",
+      password: 123456
     },
     {
       photo: "assets/images/page/patient.png",
-      user: "patient_3@email.com",
-      password: 123456789
+      user: "angeliyah.mazie@minutestep.com",
+      password: 123456
     },
     {
       photo: "assets/images/page/admin.png",
-      user: "admin@email.com",
-      password: 123456789
+      user: "zixuan.ninfa@minutestep.com",
+      password: 123456
     }
   ]
 

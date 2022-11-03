@@ -8,7 +8,7 @@
         <input [value]="profile.name" id="{{profile.name}}" name="profile" type="radio" class="form-check-input"
                [checked]="profile.name.toString() === 'patient'"
                required="" (change)="onChangeProfile(profile)">
-        <label class="form-check-label" for="{{profile.name}}">{{profile.description}}</label>
+        <label class="form-check-label" for="{{profile.name}}"><img [src]="profile.image" [alt]="profile.description"/></label>
       </div>
     </div>
     <div class="row g-3">
@@ -48,7 +48,8 @@
       </div>
       <div class="col-12">
         <label for="image1" class="form-label">Foto de perfil</label>
-        <input type="file" class="form-control" id="image1" placeholder="..." formControlName="image1" required
+        <input (change)="uploadImage($event)" type="file" class="form-control" id="image1" placeholder="..."
+               formControlName="image1" required
                [ngClass]="{'is-invalid': formGroup.get('image1')?.touched && formGroup.get('image1')?.invalid, 'is-valid': formGroup.get('image1')?.touched && formGroup.get('image1')?.valid}">
       </div>
     </div>
@@ -61,7 +62,8 @@
       </div>
       <div class="col-12">
         <label for="image2" class="form-label">Foto de perfil 2</label>
-        <input type="file" class="form-control" id="image2" placeholder="..." formControlName="image2" required
+        <input (change)="uploadImage($event)" type="file" class="form-control" id="image2" placeholder="..."
+               formControlName="image2" required
                [ngClass]="{'is-invalid': formGroup.get('image2')?.touched && formGroup.get('image2')?.invalid, 'is-valid': formGroup.get('image2')?.touched && formGroup.get('image2')?.valid}">
       </div>
     </div>
@@ -96,7 +98,8 @@
     </div>
     <hr class="my-4">
     <button class="w-100 btn btn-primary btn-lg" type="submit"
-            [disabled]="isValidForm() || (this.selectedProfile === 'specialist' && this.specialties.length === 0)" *ngIf="!sent">Continuar
+            [disabled]="isValidForm() || (this.selectedProfile === 'specialist' && this.specialties.length === 0)"
+            *ngIf="!sent">Continuar
     </button>
     <app-spinner *ngIf="sent"></app-spinner>
   </form>

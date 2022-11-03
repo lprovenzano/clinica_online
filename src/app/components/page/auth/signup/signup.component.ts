@@ -1,9 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../../shared/services/auth.service";
-import {Router} from "@angular/router";
 import {Role} from "../../../../shared/enums/role";
 import {Userprofile} from "../../../../shared/class/userprofile";
+import {ImagestorageService} from "../../../../shared/services/imagestorage.service";
+import {UserprofileService} from "../../../../shared/services/userprofile.service";
 
 @Component({
   selector: 'app-signup',
@@ -12,18 +13,20 @@ import {Userprofile} from "../../../../shared/class/userprofile";
 })
 export class SignupComponent implements OnInit {
   formGroup: FormGroup;
-  titleAlert: string = 'This field is required';
   post: any = '';
   selectedProfile: any = 'patient';
   sent = false;
+  images: any = []
   profiles = [
     {
       name: "patient",
-      description: "Paciente"
+      description: "Paciente",
+      image: '/assets/images/page/patient.png'
     },
     {
       name: "specialist",
-      description: "Especialista"
+      description: "Especialista",
+      image: '/assets/images/page/doctor.png'
     }
   ];
   private emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -40,20 +43,10 @@ export class SignupComponent implements OnInit {
   specialties: string[] = [];
   selectedSpecialty: any;
 
-  quickAccess = [
-    {
-      photo: "assets/images/page/doctor.png",
-      user: "doctor_1@email.com",
-      password: 987654321
-    },
-    {
-      photo: "assets/images/page/patient.png",
-      user: "patient_1@email.com",
-      password: 123456789
-    }
-  ]
-
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder,
+              private authService: AuthService,
+              private userProfileService: UserprofileService,
+              private imageStorage: ImagestorageService) {
     this.formGroup = this.formBuilder.group(this.controls);
     if (this.selectedProfile === 'patient') {
       this.addPatientControls();
@@ -78,13 +71,16 @@ export class SignupComponent implements OnInit {
 
   register() {
     this.sent = true;
-    let userProfile = new Userprofile("", this.formGroup.value.firstName, this.formGroup.value.lastName, this.formGroup.value.idNumber, this.formGroup.value.age, [this.formGroup.value.image1], this.getRole(), this.specialties, this.selectedProfile !== 'specialist')
+    let userProfile = new Userprofile("", this.formGroup.value.firstName, this.formGroup.value.lastName, this.formGroup.value.idNumber, this.formGroup.value.age, [], this.getRole(), this.specialties, this.selectedProfile !== 'specialist')
     if (this.selectedProfile === 'patient') {
-      userProfile.profilePhotos.push(this.formGroup.value?.image2)
       userProfile.socialWork = this.formGroup.value.socialWork;
     }
+    this.authService.SignUp(this.formGroup.value.email, this.formGroup.value.password);
     setTimeout(() => {
-      this.authService.SignUp(this.formGroup.value.email, this.formGroup.value.password, userProfile);
+      const userUid = this.authService.loggedUser.uid;
+      this.imageStorage.bulkUpload(this.images, userUid)
+      userProfile.id = userUid
+      this.userProfileService.create(userProfile)
     }, 2000);
   }
 
@@ -124,5 +120,9 @@ export class SignupComponent implements OnInit {
         return Role.ADMIN;
       }
     }
+  }
+
+  uploadImage($event: any) {
+    Array.from($event.target.files).forEach(f => this.images.push(f));
   }
 }
