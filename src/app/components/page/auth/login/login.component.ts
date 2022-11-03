@@ -28,22 +28,22 @@ export class LoginComponent implements OnInit {
     },
     {
       photo: "assets/images/page/doctor.png",
-      user: "noemy.freedom@minutestep.com",
+      user: "otavio.jovan@minutestep.com",
       password: 123456
     },
     {
       photo: "assets/images/page/patient.png",
-      user: "aryo.reece@minutestep.com",
+      user: "yovanni.dartanian@minutestep.com",
       password: 123456
     },
     {
       photo: "assets/images/page/patient.png",
-      user: "anayi.syren@minutestep.com",
+      user: "yovanni.dartanian@minutestep.com",
       password: 123456
     },
     {
       photo: "assets/images/page/patient.png",
-      user: "angeliyah.mazie@minutestep.com",
+      user: "yovanni.dartanian@minutestep.com",
       password: 123456
     },
     {
