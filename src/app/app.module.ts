@@ -15,6 +15,7 @@ import {AuthModule} from "./modules/auth/auth.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HomeModule} from "./modules/home/home.module";
 import {ClinicModule} from "./modules/clinic/clinic.module";
+import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {ClinicModule} from "./modules/clinic/clinic.module";
     FooterComponent
   ],
   imports: [
+    SweetAlert2Module.forRoot(),
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),

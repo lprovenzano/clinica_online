@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.sent = true;
     this.authService.SignIn(this.user, this.password)
+    setTimeout(() => this.sent = false, 3000)
   }
 
   onLogin(user: any, password: any) {

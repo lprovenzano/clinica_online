@@ -6,6 +6,8 @@ import {User} from "../interfaces/user";
 import * as auth from 'firebase/auth';
 import {UserprofileService} from "./userprofile.service";
 import {ImagestorageService} from "./imagestorage.service";
+import Swal from "sweetalert2";
+
 
 @Injectable({
   providedIn: 'root'
@@ -64,7 +66,11 @@ export class AuthService {
         });
       })
       .catch((error) => {
-        window.alert(error.message);
+        Swal.fire(
+          'Ups!',
+          error.message,
+          'error'
+        );
       });
   }
 
@@ -80,7 +86,11 @@ export class AuthService {
         this.SetUserData(result.user);
       })
       .catch((error) => {
-        window.alert(error.message);
+        Swal.fire(
+          'Ups!',
+          error.message,
+          'error'
+        );
       });
   }
 
@@ -101,7 +111,11 @@ export class AuthService {
         window.alert('Password reset email sent, check your inbox.');
       })
       .catch((error) => {
-        window.alert(error);
+        Swal.fire(
+          'Ups!',
+          error.message,
+          'error'
+        );
       });
   }
 
@@ -131,7 +145,11 @@ export class AuthService {
         this.SetUserData(result.user);
       })
       .catch((error) => {
-        window.alert(error);
+        Swal.fire(
+          'Ups!',
+          error.message,
+          'error'
+        );
       });
   }
 
