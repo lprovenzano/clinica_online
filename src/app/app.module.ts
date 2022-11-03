@@ -11,18 +11,16 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { SpecialistManagerComponent } from './components/clinic/administrator/specialist-manager/specialist-manager.component';
-import { CreateAdminComponent } from './components/clinic/administrator/create-admin/create-admin.component';
 import {AuthModule} from "./modules/auth/auth.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HomeModule} from "./modules/home/home.module";
+import {ClinicModule} from "./modules/clinic/clinic.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    FooterComponent,
-    SpecialistManagerComponent,
-    CreateAdminComponent
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -32,12 +30,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    AuthModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HomeModule
   ],
   providers: [],
-  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
