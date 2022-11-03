@@ -1,0 +1,31 @@
+<!--<app-spinner *ngIf="specialistApprovals?.length === 0"></app-spinner>-->
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nombre</th>
+    <th scope="col">Apellido</th>
+    <th scope="col">Especialidades</th>
+    <th scope="col">Estado</th>
+    <th scope="col">Acción</th>
+  </tr>
+  </thead>
+  <tbody class="table-group-divider">
+  <tr *ngFor="let specialist of specialistApprovals;let i = index">
+    <th scope="row">{{i+1}}</th>
+    <td>{{specialist?.firstName}}</td>
+    <td>{{specialist?.lastName}}</td>
+    <td>{{specialist.specialties.join(', ')}}</td>
+    <td><img [src]="specialist.approved ? '/assets/images/admin/check.svg' : '/assets/images/admin/x.svg'"></td>
+    <td><div class="btn-group" role="group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Acción
+      </button>
+      <ul class="dropdown-menu">
+        <li *ngIf="!specialist.approved"><a class="dropdown-item" (click)="enableSpecialist(specialist.idNumber)">Habilitar</a></li>
+        <li *ngIf="specialist.approved"><a class="dropdown-item" (click)="disableSpecialist(specialist.idNumber)">Dar de baja</a></li>
+      </ul>
+    </div></td>
+  </tr>
+  </tbody>
+</table>
