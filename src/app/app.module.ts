@@ -14,6 +14,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { SpecialistManagerComponent } from './components/clinic/administrator/specialist-manager/specialist-manager.component';
 import { CreateAdminComponent } from './components/clinic/administrator/create-admin/create-admin.component';
 import {AuthModule} from "./modules/auth/auth.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,8 @@ import {AuthModule} from "./modules/auth/auth.module";
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     AuthModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   exports: [],
