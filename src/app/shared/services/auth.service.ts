@@ -7,6 +7,7 @@ import * as auth from 'firebase/auth';
 import {UserprofileService} from "./userprofile.service";
 import {ImagestorageService} from "./imagestorage.service";
 import Swal from "sweetalert2";
+import {ImageServiceService} from "./image-service.service";
 
 
 @Injectable({
@@ -20,7 +21,8 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone,
     private userProfileService: UserprofileService,
-    private imageStorage: ImagestorageService
+    private imageStorage: ImagestorageService,
+    private imageService: ImageServiceService
   ) {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
@@ -45,11 +47,14 @@ export class AuthService {
         this.afAuth.authState.subscribe(async (user) => {
           if (user) {
             if (user.emailVerified) {
+              let userImages: any[] = [];
               this.imageStorage.getImagesById(user.uid).then(async i => {
                 const userProfile = await this.userProfileService.getById(user.uid);
                 userProfile.profilePhotos = i;
-                setTimeout(()=> {
+                userImages.push(i)
+                setTimeout(() => {
                   if (userProfile.approved) {
+                    this.imageService.create({idNumber: userProfile.idNumber, images: JSON.stringify(userImages)});
                     localStorage.setItem('user-profile', JSON.stringify(userProfile));
                     this.router.navigate(['/clinic'])
                   } else {
@@ -66,9 +71,15 @@ export class AuthService {
         });
       })
       .catch((error) => {
+        let message;
+        if (error.message.includes('auth/user-not-found') || error.message.includes('auth/wrong-password')) {
+          message = 'Usuario inválido'
+        } else {
+          message = error.message;
+        }
         Swal.fire(
           'Ups!',
-          error.message,
+          message,
           'error'
         );
       });

@@ -11,10 +11,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import {AuthModule} from "./modules/auth/auth.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HomeModule} from "./modules/home/home.module";
-import {ClinicModule} from "./modules/clinic/clinic.module";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 
 @NgModule({
@@ -37,6 +35,7 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
     HomeModule
   ],
   providers: [],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

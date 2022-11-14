@@ -23,4 +23,6 @@ export class Userprofile {
     this.specialties = specialties;
     this.approved = approved;
   }
+
+
 }

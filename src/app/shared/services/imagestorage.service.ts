@@ -23,7 +23,7 @@ export class ImagestorageService {
   async getImagesById(uid: string): Promise<string[]> {
     let urls: string[] = [];
     const ref = this.storage.ref(uid);
-    ref.listAll().forEach(lr => lr.items.forEach(i => i.getDownloadURL().then(url => urls.push(url))))
+    await ref.listAll().forEach(lr => lr.items.forEach(i => i.getDownloadURL().then(url => urls.push(url))))
     return urls;
   }
 }
