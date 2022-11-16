@@ -1,10 +1,15 @@
 <div *ngIf="this.userProfile.getLoggedProfile.role == 'SPECIALIST'">
-  <app-list-diary (diaryShifts)="processShifts($event)" (allDiariesInClinic)="processDiaries($event)"></app-list-diary>
+  <app-list-diary (diaryShifts)="processShifts($event)" (allDiariesInClinic)="processDiaries($event)"
+                  (diarySuscriber)="processDiarySuscriber($event)"></app-list-diary>
   <div class="b-example-divider"></div>
-  <app-list-shift [shifts]="this.shifts" [myDiaries]="this.diaries"></app-list-shift>
+  <app-list-shift [shifts]="this.shifts" [myDiaries]="this.diaries" [diarySuscriber]="this.diarySuscriber"></app-list-shift>
 </div>
 <div *ngIf="this.userProfile.getLoggedProfile.role == 'PATIENT'">
   <div class="row">
+    <div class="col-12">
+      <app-patient-shift-list></app-patient-shift-list>
+    </div>
+    <div class="b-example-divider"></div>
     <div class="col-6">
       <app-patient-shift-request (selectedDoctor)="processSelectedDoctor($event)"></app-patient-shift-request>
     </div>
@@ -15,8 +20,8 @@
   </div>
   <div class="row" *ngIf="this.selectedShifts.length>0">
     <div class="col-12">
-      <app-patient-shift-request-list [shifts]="this.selectedShifts" [diary]="this.selectedDoctor"></app-patient-shift-request-list>
+      <app-patient-shift-request-list [shifts]="this.selectedShifts"
+                                      [diary]="this.selectedDoctor"></app-patient-shift-request-list>
     </div>
   </div>
-  <div class="b-example-divider"></div>
 </div>

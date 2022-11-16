@@ -5,7 +5,6 @@ import {ShiftStatus} from "../../../../../shared/enums/shift-status";
 import {Diary} from "../../../../../shared/class/diary";
 import moment from "moment";
 import {DateService} from "../../../../../shared/services/date.service";
-import {Observable} from "rxjs";
 import {DiaryService} from "../../../../../shared/services/diary.service";
 
 @Component({
@@ -19,9 +18,11 @@ export class ListShiftComponent implements OnInit {
   shifts: Set<any> = new Set<any>();
   myShifts: Shift[] = [];
   filter: any;
+  @Input()
+  diarySuscriber: any;
 
   @Input()
-  myDiaries: Diary[] = [];
+  myDiaries: Set<any> = new Set<any>();
 
   constructor(private dateService: DateService, private diaryService: DiaryService) {
   }
@@ -31,7 +32,8 @@ export class ListShiftComponent implements OnInit {
       Array.from(this.shifts.values()).forEach(x => {
         this.myShifts = this.myShifts.concat(x)
       })
-    }, 2000);
+      this.diarySuscriber.unsubscribe();
+    }, 1500);
   }
 
   filterCriteria(filter: any) {
@@ -40,7 +42,7 @@ export class ListShiftComponent implements OnInit {
 
   async finishShift(shift: Shift) {
     const {value: formValues} = await Swal.fire({
-      title: 'Multiple inputs',
+      title: '',
       html:
         '<input id="swal-input1" class="swal2-input" placeholder="Reseña">' +
         '<input id="swal-input2" class="swal2-input" placeholder="Diagnostico">',
@@ -53,21 +55,84 @@ export class ListShiftComponent implements OnInit {
       }
     })
     if (formValues) {
-      setTimeout(() => this.update(shift, {review: formValues[0], diagnostic: formValues[1]}), 1000)
+      if (formValues[0].trim().toLowerCase().length === 0) {
+        await Swal.fire('Debe tener una reseña', '', "error")
+      } else if (formValues[1].trim().toLowerCase().length === 0) {
+        await Swal.fire('Debe tener un dianóstico', '', "error")
+      } else {
+        this.update(shift, {
+          review: formValues[0],
+          diagnostic: formValues[1]
+        }, ShiftStatus.FINISHED)
+      }
     }
   }
 
-  private update(shift: Shift, response: any) {
-    moment.locale("es")
+  async rejectShift(shift: Shift) {
+    const {value: formValues} = await Swal.fire({
+      title: '',
+      html:
+        '<input id="swal-input1" class="swal2-input" placeholder="Motivo de rechazo">',
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement).value
+        ]
+      }
+    })
+    if (formValues) {
+      if (formValues[0].trim().toLowerCase().length === 0) {
+        await Swal.fire('Debe tener un motivo', '', "error")
+      } else {
+        this.update(shift, {review: formValues[0], diagnostic: ''}, ShiftStatus.REJECTED);
+      }
+    }
+  }
+
+  async cancelShift(shift: Shift) {
+    const {value: formValues} = await Swal.fire({
+      title: '',
+      html:
+        '<input id="swal-input1" class="swal2-input" placeholder="Motivo de cancelación" required>',
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement).value
+        ]
+      }
+    })
+    if (formValues) {
+      if (formValues[0].trim().toLowerCase().length === 0) {
+        await Swal.fire('Debe tener un motivo', '', "error")
+      } else {
+       this.update(shift, {review: formValues[0], diagnostic: ''}, ShiftStatus.CANCELLED);
+      }
+
+    }
+  }
+
+  async acceptShift(shift: Shift) {
+    this.update(shift, {review: '', diagnostic: ''}, ShiftStatus.ACCEPTED)
+  }
+
+  private update(shift: Shift, response: any, status: ShiftStatus) {
     const date = moment(shift.date);
     const dayOfWeek = this.dateService.getDayByNumber(date.isoWeekday())
-    this.myDiaries = this.myDiaries.filter(x => x.specialty === shift.specialty && x.day === dayOfWeek)
+    const diaries = Array.from(this.myDiaries.values()).filter(x => x.specialty === shift.specialty && x.day === dayOfWeek)
     let shiftUpdated = shift;
     shiftUpdated.review = response.review;
     shiftUpdated.diagnostic = response.diagnostic;
-    shiftUpdated.status = ShiftStatus.FINISHED
+    shiftUpdated.status = status
     const index = this.myShifts.indexOf(shift);
     this.myShifts[index] = shiftUpdated;
-    this.diaryService.update(new Diary(this.myShifts, JSON.parse(this.myDiaries[0].doctor), this.myDiaries[0].specialty, this.myDiaries[0].day, this.myDiaries[0].start, this.myDiaries[0].end, this.myDiaries[0].status)).then(r => console.log(r))
+    this.diaryService.delete(new Diary(this.myShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
+      .then(r => {
+        this.diaryService.create(new Diary(this.myShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
+      });
+
+  }
+
+  async seeReview(shift: any) {
+    await Swal.fire('Reseña', shift.review)
   }
 }

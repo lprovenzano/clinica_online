@@ -11,9 +11,10 @@ import {Diary} from "../../../shared/class/diary";
 export class ClinicComponent implements OnInit {
 
   shifts: Set<any> = new Set<any>();
-  diaries: Diary[] = []
+  diaries: Set<any> = new Set<any>();
   selectedDoctor: any;
   selectedShifts: any[] = [];
+  diarySuscriber: any;
 
   constructor(
     public authService: AuthService,
@@ -37,5 +38,9 @@ export class ClinicComponent implements OnInit {
 
   processSelectedShifts($event: any) {
     this.selectedShifts = $event;
+  }
+
+  processDiarySuscriber($event: any) {
+    this.diarySuscriber = $event;
   }
 }

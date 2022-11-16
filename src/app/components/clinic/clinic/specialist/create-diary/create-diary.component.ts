@@ -13,6 +13,7 @@ import {DiaryStatus} from "../../../../../shared/enums/diary-status";
 import * as Console from "console";
 import Swal from "sweetalert2";
 import {Router} from "@angular/router";
+import moment from "moment";
 
 @Component({
   selector: 'app-create-diary',
@@ -44,6 +45,7 @@ export class CreateDiaryComponent implements OnInit {
   }
 
   addDiary() {
+    moment.locale("es")
     const day = this.selectedDay;
     const from = Number(this.formGroup.value.from);
     const to = Number(this.formGroup.value.to);
@@ -56,24 +58,21 @@ export class CreateDiaryComponent implements OnInit {
         this.dateService.getNextDatesInMonth(day, from, to)
           .forEach((date, dateIndex) => {
               const shift = new Shift((dateIndex + 1), ShiftStatus.AVAILABLE, "", survey, date, s);
-              console.log(shift)
               shifts.push(shift)
             }
           );
         diary.push(new Diary(shifts, doctor, s, day, from, to, DiaryStatus.AVAILABLE));
       })
-    setTimeout(()=> {
-      this.diaryService.create(diary[0])
-      Swal.fire({
-        icon: 'success',
-        showCancelButton: false,
-        confirmButtonColor: '#3085d6'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.reload();
-        }
-      })
-    },1000)
+    this.diaryService.create(diary[0])
+    Swal.fire({
+      icon: 'success',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
+      }
+    })
   }
 
   isValidForm() {

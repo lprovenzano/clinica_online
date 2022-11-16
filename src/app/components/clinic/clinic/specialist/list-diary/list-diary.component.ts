@@ -1,21 +1,21 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {DiaryService} from "../../../../../shared/services/diary.service";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Diary} from "../../../../../shared/class/diary";
 import moment from "moment";
 import {UserprofileService} from "../../../../../shared/services/userprofile.service";
 import {Shift} from "../../../../../shared/class/shift";
-import {ShiftStatus} from "../../../../../shared/enums/shift-status";
+import {DiaryStatus} from "../../../../../shared/enums/diary-status";
 
 @Component({
   selector: 'app-list-diary',
   templateUrl: './list-diary.component.html',
   styleUrls: ['./list-diary.component.scss']
 })
-export class ListDiaryComponent implements OnInit {
+export class ListDiaryComponent implements OnInit, OnDestroy {
 
   diaries: Observable<Diary[]> | undefined;
-  allDiaries: Diary[] = [];
+  allDiaries: Set<any> = new Set<any>();
   allShifts: Set<any> = new Set<any>();
 
   @Output()
@@ -23,6 +23,10 @@ export class ListDiaryComponent implements OnInit {
 
   @Output()
   allDiariesInClinic = new EventEmitter<any>();
+  private suscriber: Subscription = new Subscription();
+
+  @Output()
+  diarySuscriber = new EventEmitter<any>();
 
   constructor(
     private diaryService: DiaryService,
@@ -34,23 +38,22 @@ export class ListDiaryComponent implements OnInit {
     const user = this.userProfile.getLoggedProfile;
     this.diaries = this.diaryService.getAll().valueChanges();
     const today = moment().toDate();
-    this.diaries.subscribe(diary => {
-        diary.filter(d => JSON.parse(d.doctor).idNumber === user.idNumber).map(d => {
-          const shifts = JSON.parse(d.shifts).filter((shift: Shift) => moment(shift.date).isSameOrAfter(today) && shift.status === ShiftStatus.TAKEN);
-          this.allShifts.add(shifts.sort((a: any, b: any) => {
-            return a.date - b.date;
-          }));
-          if (this.allDiaries.indexOf(d) === -1)
-            this.allDiaries.push(d)
-        })
+    this.suscriber = this.diaries.subscribe(diary => {
+        diary.filter(d => JSON.parse(d.doctor).idNumber === user.idNumber)
+          .map(d => {
+            const shifts = JSON.parse(d.shifts).filter((shift: Shift) => moment(shift.date).isSameOrAfter(today));
+            this.allShifts.add(shifts);
+            this.allDiaries.add(d)
+          })
       }
     );
     this.diaryShifts.emit(this.allShifts)
     this.allDiariesInClinic.emit(this.allDiaries)
-
+    this.diarySuscriber.emit(this.suscriber)
   }
 
-  ngOnDestroy() {
-    this.diaries = undefined;
+  ngOnDestroy(): void {
+    this.suscriber.unsubscribe();
   }
+
 }
