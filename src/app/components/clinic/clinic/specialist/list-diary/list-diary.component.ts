@@ -14,7 +14,6 @@ import {DiaryStatus} from "../../../../../shared/enums/diary-status";
 })
 export class ListDiaryComponent implements OnInit, OnDestroy {
 
-  diaries: Observable<Diary[]> | undefined;
   allDiaries: Set<any> = new Set<any>();
   allShifts: Set<any> = new Set<any>();
 
@@ -36,18 +35,13 @@ export class ListDiaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const user = this.userProfile.getLoggedProfile;
-    this.diaries = this.diaryService.getAll().valueChanges();
-    const today = moment().toDate();
-    this.suscriber = this.diaries.subscribe(diary => {
+    this.suscriber = this.diaryService.getAll().valueChanges().subscribe(diary => {
         diary.filter(d => JSON.parse(d.doctor).idNumber === user.idNumber)
           .map(d => {
-            const shifts = JSON.parse(d.shifts).filter((shift: Shift) => moment(shift.date).isSameOrAfter(today));
-            this.allShifts.add(shifts);
             this.allDiaries.add(d)
           })
       }
     );
-    this.diaryShifts.emit(this.allShifts)
     this.allDiariesInClinic.emit(this.allDiaries)
     this.diarySuscriber.emit(this.suscriber)
   }

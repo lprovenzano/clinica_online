@@ -65,6 +65,6 @@ export class PatientShiftRequestListComponent implements OnInit {
             }
           })
         });
-    }, 1000)
+    }, 2000)
   }
 }

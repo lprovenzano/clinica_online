@@ -2,7 +2,7 @@
   <app-list-diary (diaryShifts)="processShifts($event)" (allDiariesInClinic)="processDiaries($event)"
                   (diarySuscriber)="processDiarySuscriber($event)"></app-list-diary>
   <div class="b-example-divider"></div>
-  <app-list-shift [shifts]="this.shifts" [myDiaries]="this.diaries"
+  <app-list-shift [myDiaries]="this.diaries"
                   [diarySuscriber]="this.diarySuscriber"></app-list-shift>
 </div>
 <div *ngIf="this.userProfile.getLoggedProfile.role == 'PATIENT'">

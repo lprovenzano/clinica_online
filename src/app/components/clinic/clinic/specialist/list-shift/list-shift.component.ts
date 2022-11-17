@@ -14,8 +14,7 @@ import {DiaryService} from "../../../../../shared/services/diary.service";
 })
 export class ListShiftComponent implements OnInit {
 
-  @Input()
-  shifts: Set<any> = new Set<any>();
+
   myShifts: Shift[] = [];
   filter: any;
   @Input()
@@ -29,11 +28,11 @@ export class ListShiftComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-      Array.from(this.shifts.values()).forEach(x => {
-        this.myShifts = this.myShifts.concat(x)
+      Array.from(this.myDiaries).map(d => {
+        JSON.parse(d.shifts).forEach((s:any) => this.myShifts.push(s))
       })
       this.diarySuscriber.unsubscribe();
-    }, 1500);
+    }, 1700)
   }
 
   filterCriteria(filter: any) {
@@ -105,7 +104,7 @@ export class ListShiftComponent implements OnInit {
       if (formValues[0].trim().toLowerCase().length === 0) {
         await Swal.fire('Debe tener un motivo', '', "error")
       } else {
-       this.update(shift, {review: formValues[0], diagnostic: ''}, ShiftStatus.CANCELLED);
+        this.update(shift, {review: formValues[0], diagnostic: ''}, ShiftStatus.CANCELLED);
       }
     }
   }
@@ -122,16 +121,17 @@ export class ListShiftComponent implements OnInit {
     shiftUpdated.review = response.review;
     shiftUpdated.diagnostic = response.diagnostic;
     shiftUpdated.status = status
-    const index = this.myShifts.indexOf(shift);
-    this.myShifts[index] = shiftUpdated;
-    this.diaryService.delete(new Diary(this.myShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
+    const myNewShifts = JSON.parse(diaries[0].shifts);
+    const index = myNewShifts.indexOf(myNewShifts.find((x:any) => x.id === shift.id));
+    myNewShifts[index] = shiftUpdated;
+    this.diaryService.delete(new Diary(myNewShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
       .then(r => {
-        this.diaryService.create(new Diary(this.myShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
+        this.diaryService.create(new Diary(myNewShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
       });
 
   }
 
   async seeReview(shift: any) {
-    await Swal.fire('Comentarios', '<p><b>Comentario:</b> ' + shift.review + '<hr><p><b>Diagnóstico: </b> '+ shift.diagnostic +'</p>')
+    await Swal.fire('Comentarios', '<p><b>Comentario:</b> ' + shift.review + '<hr><p><b>Diagnóstico: </b> ' + shift.diagnostic + '</p>')
   }
 }
