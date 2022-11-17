@@ -1,0 +1,8 @@
+<div class="container px-4 py-5 roll-in-left" id="featured-3">
+  <h2 class="pb-2 border-bottom">Turnos disponibles</h2>
+  <div class="row">
+    <div class="col-3" *ngFor="let doctor of this.allDiaries">
+      <img src="{{doctor.photo}}" (click)="selectDoctorDiary(doctor)" class="img-thumbnail img-responsive" alt="doctor-image">
+    </div>
+  </div>
+</div>

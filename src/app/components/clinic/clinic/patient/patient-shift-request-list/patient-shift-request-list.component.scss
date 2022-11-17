@@ -1,0 +1,18 @@
+.square{
+  width: 120px;
+  height: 120px;
+  background-color: darkblue;
+  color: whitesmoke;
+  font-weight: bold;
+  padding: 5%;
+  cursor: pointer;
+  margin: 1%;
+}
+
+.square:hover{
+  background-color: cadetblue;
+}
+
+.square:active{
+  background-color: dimgray;
+}

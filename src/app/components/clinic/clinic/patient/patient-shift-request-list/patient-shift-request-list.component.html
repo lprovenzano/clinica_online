@@ -1,0 +1,10 @@
+<div class="container px-4 py-5 roll-in-left" id="featured-3">
+  <h2 class="pb-2 border-bottom">Turnos disponibles</h2>
+  <div class="row">
+    <div class="col-3 text-center" *ngFor="let shift of this.shifts">
+      <div (click)="takeShift(shift)" class="square">
+        {{shift.date | date:'medium'}}
+      </div>
+    </div>
+  </div>
+</div>

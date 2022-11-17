@@ -1,0 +1,29 @@
+<div class="container px-4 py-5 roll-in-left" id="featured-3">
+  <h2 class="pb-2 border-bottom">Mis turnos</h2>
+<div class="row">
+  <input type="text" placeholder="Especialista o especialidad" [(ngModel)] = this.filter/>
+</div>
+  <div class="row">
+    <div [ngClass]="shift.status | shiftcolor" class="card  mb-3" style="max-width: 15rem;" *ngFor="let shift of allShifts | shiftspecialtyspecialist:filterCriteria(this.filter)">
+      <div class="card-header">{{shift.status | shiftstatus}}</div>
+      <div class="card-body">
+        <h5 class="card-title">{{shift.specialty}}</h5>
+        <ul>
+          <li>{{shift.specialist}}</li>
+          <li>{{shift.date | date:'medium'}}</li>
+        </ul>
+        <button *ngIf="shift.status === 'TAKEN' || shift.status === 'ACCEPTED'" type="button" (click)="cancel(shift)" class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-x-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z"></path>
+          </svg>
+        </button>
+        <button type="button" *ngIf="shift?.review != '' || shift?.diagnostic != ''" (click)="seeReview(shift)" class="btn btn-light">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>
+            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
