@@ -2,12 +2,13 @@
   <app-list-diary (diaryShifts)="processShifts($event)" (allDiariesInClinic)="processDiaries($event)"
                   (diarySuscriber)="processDiarySuscriber($event)"></app-list-diary>
   <div class="b-example-divider"></div>
-  <app-list-shift [shifts]="this.shifts" [myDiaries]="this.diaries" [diarySuscriber]="this.diarySuscriber"></app-list-shift>
+  <app-list-shift [shifts]="this.shifts" [myDiaries]="this.diaries"
+                  [diarySuscriber]="this.diarySuscriber"></app-list-shift>
 </div>
 <div *ngIf="this.userProfile.getLoggedProfile.role == 'PATIENT'">
   <div class="row">
     <div class="col-12">
-      <app-patient-shift-list></app-patient-shift-list>
+      <app-patient-shift-list [allShiftsClinic]="this.allShiftClinic" [allDiariesClinic]="this.allDiariesClinic"></app-patient-shift-list>
     </div>
     <div class="b-example-divider"></div>
     <div class="col-6">
@@ -15,12 +16,14 @@
     </div>
     <div class="col-6">
       <app-patient-shift-selected [doctor]="this.selectedDoctor"
+                                  [allShiftClinic]="this.allShiftClinic"
                                   (selectShifts)="processSelectedShifts($event)"></app-patient-shift-selected>
     </div>
   </div>
   <div class="row" *ngIf="this.selectedShifts.length>0">
     <div class="col-12">
-      <app-patient-shift-request-list [shifts]="this.selectedShifts"
+      <app-patient-shift-request-list [shifts]="this.selectedShifts" [allShifts]="this.allShiftClinic"
+                                      [allDiariesClinic]="this.allDiariesClinic"
                                       [diary]="this.selectedDoctor"></app-patient-shift-request-list>
     </div>
   </div>

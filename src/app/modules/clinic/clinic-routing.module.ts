@@ -5,6 +5,7 @@ import {SpecialistManagerComponent} from "../../components/clinic/administrator/
 import {CreateAdminComponent} from "../../components/clinic/administrator/create-admin/create-admin.component";
 import {AdminGuard} from "../../shared/guard/admin.guard";
 import {CreateDiaryComponent} from "../../components/clinic/clinic/specialist/create-diary/create-diary.component";
+import {MyProfileComponent} from "../../components/clinic/my-profile/my-profile.component";
 
 const routes: Routes = [{
   path: '',
@@ -22,6 +23,9 @@ const routes: Routes = [{
     },
     {
       path: 'create-diary', component: CreateDiaryComponent
+    },
+    {
+      path: 'my-profile', component: MyProfileComponent
     }
   ]
 }];

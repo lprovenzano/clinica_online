@@ -97,6 +97,18 @@
       </div>
     </div>
     <hr class="my-4">
+    <div class="row text-center">
+      <div class="col-6 align-middle">
+        <label for="captcha" class="form-label"><img width="400" height="300" [src]="this.captchaImg" /></label>
+      </div>
+      <div class="col-6 align-middle form-captcha">
+        <div class="input-group has-validation">
+          <input type="text" class="form-control" id="captcha" placeholder="?" formControlName="captcha" required
+                 [ngClass]="{'is-invalid': formGroup.get('captcha')?.touched && formGroup.get('captcha')?.invalid, 'is-valid': formGroup.get('captcha')?.touched && formGroup.get('captcha')?.valid}">
+        </div>
+      </div>
+    </div>
+    <hr class="my-4">
     <button class="w-100 btn btn-primary btn-lg" type="submit"
             [disabled]="isValidForm() || (this.selectedProfile === 'specialist' && this.specialties.length === 0)"
             *ngIf="!sent">Continuar

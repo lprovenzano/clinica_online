@@ -107,7 +107,6 @@ export class ListShiftComponent implements OnInit {
       } else {
        this.update(shift, {review: formValues[0], diagnostic: ''}, ShiftStatus.CANCELLED);
       }
-
     }
   }
 
@@ -133,6 +132,6 @@ export class ListShiftComponent implements OnInit {
   }
 
   async seeReview(shift: any) {
-    await Swal.fire('Reseña', shift.review)
+    await Swal.fire('Comentarios', '<p><b>Comentario:</b> ' + shift.review + '<hr><p><b>Diagnóstico: </b> '+ shift.diagnostic +'</p>')
   }
 }

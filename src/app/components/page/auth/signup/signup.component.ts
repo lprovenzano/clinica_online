@@ -29,8 +29,10 @@ export class SignupComponent implements OnInit {
       image: '/assets/images/page/doctor.png'
     }
   ];
+  public captchaImg = '';
   private emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   private idNumberRegex: RegExp = /[^a-z ]\ *([.0-9])*\d/g
+  private captchaRegex: RegExp = /(^|)4(?=\s|$)?/
   private controls = {
     'email': [null, [Validators.required, Validators.pattern(this.emailRegex)]],
     'firstName': [null, [Validators.required, Validators.minLength(3)]],
@@ -38,7 +40,8 @@ export class SignupComponent implements OnInit {
     'age': [null, [Validators.required, Validators.min(1), Validators.max(100)]],
     'idNumber': [null, [Validators.required, Validators.pattern(this.idNumberRegex), Validators.minLength(8), Validators.maxLength(8)]],
     'password': [null, [Validators.required, Validators.minLength(6)]],
-    'image1': [null, Validators.required]
+    'image1': [null, Validators.required],
+    'captcha': [null, [Validators.required, Validators.minLength(1), Validators.maxLength(1), Validators.pattern(this.captchaRegex)]]
   }
   specialties: string[] = [];
   selectedSpecialty: any;
@@ -54,6 +57,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.captchaImg = this.getRandomCaptcha();
   }
 
 
@@ -124,5 +128,14 @@ export class SignupComponent implements OnInit {
 
   uploadImage($event: any) {
     Array.from($event.target.files).forEach(f => this.images.push(f));
+  }
+
+  private getRandomCaptcha(): string {
+    const random: number = this.getRandomInt(10);
+    return "/assets/images/captcha/captcha_" + random + ".png";
+  }
+
+  private getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
   }
 }
