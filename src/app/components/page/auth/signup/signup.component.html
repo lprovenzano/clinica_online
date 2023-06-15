@@ -4,7 +4,7 @@
     <hr class="my-4">
     <h4 class="mb-3">Perfil</h4>
     <div class="my-3">
-      <div class="form-check" *ngFor="let profile of profiles">
+      <div class="form-check profiles" *ngFor="let profile of profiles">
         <input [value]="profile.name" id="{{profile.name}}" name="profile" type="radio" class="form-check-input"
                [checked]="profile.name.toString() === 'patient'"
                required="" (change)="onChangeProfile(profile)">
