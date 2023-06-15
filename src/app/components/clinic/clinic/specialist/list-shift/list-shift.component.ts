@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import {Component, Input, OnInit} from '@angular/core';
 import {Shift} from "../../../../../shared/class/shift";
 import Swal from "sweetalert2";
@@ -14,26 +15,25 @@ import {History} from "../../../../../shared/class/history";
   styleUrls: ['./list-shift.component.scss']
 })
 export class ListShiftComponent implements OnInit {
-
-
   myShifts: Shift[] = [];
   filter: any;
-  @Input()
-  diarySuscriber: any;
+  loading: boolean = false;
 
   @Input()
-  myDiaries: Set<any> = new Set<any>();
+  myDiaries?: Observable<any[]>
 
   constructor(private dateService: DateService, private diaryService: DiaryService) {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      Array.from(this.myDiaries).map(d => {
-        JSON.parse(d.shifts).forEach((s: any) => this.myShifts.push(s))
-      })
-      this.diarySuscriber.unsubscribe();
-    }, 1700)
+    this.loading = true;
+    const today = new Date();
+    setTimeout(()=> {
+      this.myDiaries?.subscribe(d => d.map(d => {
+        this.myShifts = JSON.parse(d.shifts).filter((s:any) => new Date(s.date)> today);
+        this.loading = false;
+      }));
+    }, 1000)
   }
 
   filterCriteria(filter: any) {
@@ -139,22 +139,15 @@ export class ListShiftComponent implements OnInit {
   }
 
   private update(shift: Shift, response: any, status: ShiftStatus) {
-    console.log(response)
-    const date = moment(shift.date);
-    const dayOfWeek = this.dateService.getDayByNumber(date.isoWeekday())
-    const diaries = Array.from(this.myDiaries.values()).filter(x => x.specialty === shift.specialty && x.day === dayOfWeek)
     let shiftUpdated = shift;
     shiftUpdated.review = response.review;
     shiftUpdated.diagnostic = response.diagnostic;
-    shiftUpdated.status = status
-    // const myNewShifts = JSON.parse(diaries[0].shifts);
-    // const index = myNewShifts.indexOf(myNewShifts.find((x: any) => x.id === shift.id));
-    // myNewShifts[index] = shiftUpdated;
-    // this.diaryService.delete(new Diary(myNewShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
-    //   .then(r => {
-    //     this.diaryService.create(new Diary(myNewShifts, JSON.parse(diaries[0].doctor), diaries[0].specialty, diaries[0].day, diaries[0].start, diaries[0].end, diaries[0].status))
-    //   });
-
+    shiftUpdated.status = status;
+    this.myShifts[this.myShifts.findIndex(x => x.id === shiftUpdated.id)] = shiftUpdated;
+    this.myDiaries?.subscribe(d => {
+      const diary = new Diary(this.myShifts, JSON.parse(d[0].doctor), d[0].specialty, d[0].day, d[0].start, d[0].end, d[0].status);
+      this.diaryService.update(diary).then(x => console.log(x))
+    });
   }
 
   async seeReview(shift: any) {

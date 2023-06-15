@@ -1,9 +1,7 @@
 <div *ngIf="this.userProfile.getLoggedProfile.role == 'SPECIALIST'">
-  <app-list-diary (diaryShifts)="processShifts($event)" (allDiariesInClinic)="processDiaries($event)"
-                  (diarySuscriber)="processDiarySuscriber($event)"></app-list-diary>
+  <app-list-diary (allDiariesInClinic)="processDiaries($event)" ></app-list-diary>
   <div class="b-example-divider"></div>
-  <app-list-shift [myDiaries]="this.diaries"
-                  [diarySuscriber]="this.diarySuscriber"></app-list-shift>
+  <app-list-shift [myDiaries]="this.diaries"></app-list-shift>
 </div>
 <div *ngIf="this.userProfile.getLoggedProfile.role == 'PATIENT'">
   <div class="row">

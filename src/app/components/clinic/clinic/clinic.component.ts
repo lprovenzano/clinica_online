@@ -1,9 +1,7 @@
+import { Observable } from 'rxjs';
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../shared/services/auth.service";
 import {UserprofileService} from "../../../shared/services/userprofile.service";
-import {Diary} from "../../../shared/class/diary";
-import {Shift} from "../../../shared/class/shift";
-import moment from "moment";
 import {DiaryService} from "../../../shared/services/diary.service";
 
 @Component({
@@ -16,7 +14,7 @@ export class ClinicComponent implements OnInit {
   shifts: Set<any> = new Set<any>();
   allShiftClinic: Set<any> = new Set<any>();
   allDiariesClinic: Set<any> = new Set<any>();
-  diaries: Set<any> = new Set<any>();
+  diaries?: Observable<any[]>
   selectedDoctor: any;
   selectedShifts: any[] = [];
   diarySuscriber: any;
@@ -58,8 +56,4 @@ export class ClinicComponent implements OnInit {
   processDiarySuscriber($event: any) {
     this.diarySuscriber = $event;
   }
-
-  // processAllShiftClinic($event: any) {
-  //   this.allShiftClinic = $event;
-  // }
 }

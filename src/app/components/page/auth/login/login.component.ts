@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     },
     {
       photo: "assets/images/page/patient.png",
-      user: "onfyy79jhm@email.edu.pl",
+      user: "patryck.dezmond@minofangle.org",
       password: 123456
     },
     {

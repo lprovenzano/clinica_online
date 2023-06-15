@@ -2,7 +2,7 @@
   <h2 class="pb-2 border-bottom">Mi agenda</h2>
 
   <div class="row">
-    <div class="col-4" *ngFor="let diary of allDiaries">
+    <div class="col-4" *ngFor="let diary of diariesObservable | async">
       <div class="card text-bg-light mb-3" style="max-width: 18rem;">
         <div class="card-header">{{diary.day.toUpperCase()}} <span [ngClass]="diary.status === 'AVAILABLE' ? 'text-bg-success' : 'text-bg-danger'"
                                                                    class="badge ">{{diary.status === 'AVAILABLE' ? 'DISPONIBLE' : 'LLENA'}}</span></div>
