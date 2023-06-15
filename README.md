@@ -1,28 +1,20 @@
-# ClinicaOnline
+# Clínica online
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.5.
+Nuestra Clínica Médica Online es una plataforma diseñada para simplificar la gestión de turnos entre pacientes y profesionales médicos. El objetivo principal de esta plataforma es brindar una solución eficiente y accesible para programar y administrar citas médicas.
 
-## Development server
+El sistema está destinado a facilitar la vida tanto de los pacientes como de los profesionales de la salud. Los pacientes pueden acceder a la plataforma desde cualquier dispositivo con conexión a Internet y solicitar turnos de manera rápida y sencilla. Además, podrán ver la disponibilidad de los profesionales médicos y seleccionar el horario que más les convenga.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Por otro lado, los profesionales médicos podrán acceder a un panel de control intuitivo donde podrán gestionar los turnos de manera eficiente. Podrán revisar las solicitudes de los pacientes, confirmar o reprogramar citas, y tener un registro completo de los turnos programados.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-# clinica_online
+## Inicio
+![](https://i.imgur.com/LCbJdxA.png)
+## Login
+![](https://i.imgur.com/FcENPYE.png)
+## Registro
+![](https://i.imgur.com/CBoq5LL.png)
+## Vista de paciente
+![](https://i.imgur.com/qJe7jfF.png)
+## Gestión de turnos
+![](https://i.imgur.com/KREsstU.png)
+## Gestión de agenda
+![](https://i.imgur.com/RxcmaFK.png)
