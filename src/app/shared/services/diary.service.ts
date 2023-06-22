@@ -37,7 +37,7 @@ export class DiaryService {
       where("specialty", "==", diary.specialty));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
+      //console.log(doc.id, " => ", doc.data());
       const path = this.path +"/"+doc.id;
       const docRefFirebase = this.db.doc(path)
       docRefFirebase.update({...diary})
