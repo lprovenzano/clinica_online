@@ -3,6 +3,7 @@
   <div class="row">
     <div class="col-3" *ngFor="let doctor of this.allDiaries">
       <img src="{{doctor.photo}}" (click)="selectDoctorDiary(doctor)" class="img-thumbnail img-responsive" alt="doctor-image">
+      <h4>{{getDoctorName(doctor)}}</h4>
     </div>
   </div>
 </div>

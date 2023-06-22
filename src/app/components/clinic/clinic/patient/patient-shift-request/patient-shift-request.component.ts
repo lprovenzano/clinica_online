@@ -55,6 +55,11 @@ export class PatientShiftRequestComponent implements OnInit, OnDestroy {
     this.selectedDoctor.emit(doctor)
   }
 
+  getDoctorName(doctor: any){
+    const shiftDoctor = JSON.parse(doctor.doctor.doctor);
+    return shiftDoctor.firstName + " " + shiftDoctor.lastName
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

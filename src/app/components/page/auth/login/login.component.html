@@ -1,7 +1,10 @@
 <div class="row">
   <div class="col">
      <div class="gap-2">
-      <button (click)="onLogin(profile.user, profile.password)" class="btn btn-outline-dark quickAccessBtn" type="button" *ngFor="let profile of quickAccess"><img [src]=profile.photo alt="{{profile.photo}}"></button>
+      <div *ngFor="let profile of quickAccess">
+        <button (click)="onLogin(profile.user, profile.password)" class="btn btn-outline-dark quickAccessBtn" type="button">
+          <img [src]=profile.photo alt="{{profile.photo}}"></button>
+      </div>
     </div>
   </div>
   <div class="col-4 text-center">
