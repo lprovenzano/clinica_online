@@ -8,7 +8,7 @@ import {UserprofileService} from "../../../../../shared/services/userprofile.ser
   templateUrl: './list-diary.component.html',
   styleUrls: ['./list-diary.component.scss']
 })
-export class ListDiaryComponent implements OnInit {
+export class ListDiaryComponent implements OnInit, OnDestroy {
 
   diariesObservable?: Observable<any[]>;
   allShifts: Set<any> = new Set<any>();
@@ -20,6 +20,9 @@ export class ListDiaryComponent implements OnInit {
     private diaryService: DiaryService,
     private userProfile: UserprofileService
   ) {
+  }
+  ngOnDestroy(): void {
+    this.diariesObservable = new Observable();
   }
 
   ngOnInit(): void {

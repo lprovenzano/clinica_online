@@ -1,5 +1,6 @@
-import { Observable } from 'rxjs';
-import {Component, OnInit} from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {AuthService} from "../../../shared/services/auth.service";
 import {UserprofileService} from "../../../shared/services/userprofile.service";
 import {DiaryService} from "../../../shared/services/diary.service";
@@ -9,7 +10,7 @@ import {DiaryService} from "../../../shared/services/diary.service";
   templateUrl: './clinic.component.html',
   styleUrls: ['./clinic.component.scss']
 })
-export class ClinicComponent implements OnInit {
+export class ClinicComponent implements OnInit, OnDestroy {
 
   shifts: Set<any> = new Set<any>();
   allShiftClinic: Set<any> = new Set<any>();
@@ -18,12 +19,15 @@ export class ClinicComponent implements OnInit {
   selectedDoctor: any;
   selectedShifts: any[] = [];
   diarySuscriber: any;
-  suscriber: any | undefined;
+  suscriber?: Subscription;
 
   constructor(
     public authService: AuthService,
     public diaryService: DiaryService,
     public userProfile: UserprofileService) {
+  }
+  ngOnDestroy(): void {
+    this.suscriber?.unsubscribe();
   }
 
   ngOnInit(): void {

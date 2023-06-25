@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Subscriber, Subscription } from 'rxjs';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {DiaryService} from "../../../../../shared/services/diary.service";
 import {Shift} from "../../../../../shared/class/shift";
 import {UserprofileService} from "../../../../../shared/services/userprofile.service";
@@ -13,10 +14,10 @@ import {DiaryStatus} from "../../../../../shared/enums/diary-status";
   templateUrl: './patient-shift-list.component.html',
   styleUrls: ['./patient-shift-list.component.scss']
 })
-export class PatientShiftListComponent implements OnInit {
+export class PatientShiftListComponent implements OnInit, OnDestroy {
   allDiaries: Set<any> = new Set<any>();
   allShifts: Set<any> = new Set<any>();
-  suscriber: any;
+  suscriber?: Subscription;
 
   filter:any;
 
@@ -27,6 +28,9 @@ export class PatientShiftListComponent implements OnInit {
   allDiariesClinic: Set<any> = new Set<any>();
 
   constructor(private diaryService: DiaryService, private userProfile: UserprofileService) {
+  }
+  ngOnDestroy(): void {
+    this.suscriber?.unsubscribe();
   }
 
   ngOnInit(): void {

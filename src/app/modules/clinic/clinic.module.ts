@@ -1,15 +1,12 @@
-import {NgModule} from '@angular/core';
+import { SpecialistModule } from './../specialist/specialist.module';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {ClinicRoutingModule} from './clinic-routing.module';
 import {ClinicComponent} from "../../components/clinic/clinic/clinic.component";
-import {CreateAdminComponent} from "../../components/clinic/administrator/create-admin/create-admin.component";
-import {SpecialistManagerComponent} from "../../components/clinic/administrator/specialist-manager/specialist-manager.component";
 import {ListDiaryComponent} from "../../components/clinic/clinic/specialist/list-diary/list-diary.component";
 import {ListShiftComponent} from "../../components/clinic/clinic/specialist/list-shift/list-shift.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AuthModule} from "../auth/auth.module";
-import {CreateDiaryComponent} from "../../components/clinic/clinic/specialist/create-diary/create-diary.component";
 import {ShiftspecialtyPipe} from "../../shared/pipes/shiftspecialty.pipe";
 import {PatientShiftListComponent} from "../../components/clinic/clinic/patient/patient-shift-list/patient-shift-list.component";
 import {PatientShiftRequestComponent} from "../../components/clinic/clinic/patient/patient-shift-request/patient-shift-request.component";
@@ -20,13 +17,13 @@ import {ShiftstatusPipe} from "../../shared/pipes/shiftstatus.pipe";
 import {ShiftcolorPipe} from "../../shared/pipes/shiftcolor.pipe";
 import {ShiftspecialtyspecialistPipe} from "../../shared/pipes/shiftspecialtyspecialist.pipe";
 import {MyProfileComponent} from "../../components/clinic/my-profile/my-profile.component";
+import { AdministratorModule } from '../administrator/administrator.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-  declarations: [ClinicComponent,
-    CreateAdminComponent,
-    CreateDiaryComponent,
-    SpecialistManagerComponent,
+  declarations: [
+    ClinicComponent,
     ListDiaryComponent,
     ListShiftComponent,
     ShiftspecialtyPipe,
@@ -45,8 +42,11 @@ import {MyProfileComponent} from "../../components/clinic/my-profile/my-profile.
     ClinicRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthModule
-  ]
+    AdministratorModule,
+    SpecialistModule,
+    SharedModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ClinicModule {
 }

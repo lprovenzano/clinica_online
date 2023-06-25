@@ -15,7 +15,7 @@ export class PatientShiftRequestComponent implements OnInit, OnDestroy {
   allShifts: Set<any> = new Set<any>();
   allDiaries: any[] = [];
   selectedDiary: any;
-  subscription: Subscription = new Subscription();
+  subscription?: Subscription;
 
   @Output()
   selectedDoctor = new EventEmitter<any>();
@@ -51,7 +51,7 @@ export class PatientShiftRequestComponent implements OnInit, OnDestroy {
   }
 
   selectDoctorDiary(doctor: any) {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
     this.selectedDoctor.emit(doctor)
   }
 
@@ -61,7 +61,7 @@ export class PatientShiftRequestComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
 }

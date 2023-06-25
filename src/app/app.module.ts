@@ -1,3 +1,5 @@
+import { HomeModule } from './modules/home/home.module';
+import { SharedModule } from './modules/shared/shared.module';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
@@ -12,7 +14,6 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HomeModule} from "./modules/home/home.module";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 
 @NgModule({
@@ -32,6 +33,7 @@ import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
     AngularFireDatabaseModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     HomeModule
   ],
   providers: [],

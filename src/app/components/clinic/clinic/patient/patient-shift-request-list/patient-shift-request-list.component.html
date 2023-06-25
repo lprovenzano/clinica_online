@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-3 text-center" *ngFor="let shift of this.shifts">
       <div (click)="takeShift(shift)" class="square">
-        {{shift.date | date:'medium'}}
+        {{shift.date | date:'short'}}
       </div>
     </div>
   </div>

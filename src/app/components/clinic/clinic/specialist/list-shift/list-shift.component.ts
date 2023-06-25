@@ -4,8 +4,9 @@ import {Shift} from "../../../../../shared/class/shift";
 import Swal from "sweetalert2";
 import {ShiftStatus} from "../../../../../shared/enums/shift-status";
 import {Diary} from "../../../../../shared/class/diary";
-import moment from "moment";
+import { first, take } from 'rxjs/operators';
 import {DateService} from "../../../../../shared/services/date.service";
+import {HistoryService} from "../../../../../shared/services/history.service";
 import {DiaryService} from "../../../../../shared/services/diary.service";
 import {History} from "../../../../../shared/class/history";
 
@@ -22,7 +23,9 @@ export class ListShiftComponent implements OnInit {
   @Input()
   myDiaries?: Observable<any[]>
 
-  constructor(private dateService: DateService, private diaryService: DiaryService) {
+  constructor(private dateService: DateService,
+    private diaryService: DiaryService,
+    private historyClinic: HistoryService) {
   }
 
   ngOnInit(): void {
@@ -86,9 +89,8 @@ export class ListShiftComponent implements OnInit {
         answers.history.additionalInformation['optional'] = formValues[7]
         answers.history.additionalInformation[formValues[8]] = formValues[9]
         answers.history.additionalInformation[formValues[10]] = formValues[11];
+        //this.historyClinic.save('history', JSON.stringify(answers))
         this.update(shift, answers, ShiftStatus.FINISHED)
-        console.log('RESPONSE:', answers)
-        console.log('SHIFT:', shift)
       }
 
     }
@@ -146,7 +148,12 @@ export class ListShiftComponent implements OnInit {
     shiftUpdated.diagnostic = response.diagnostic;
     shiftUpdated.status = status;
     this.myShifts[this.myShifts.findIndex(x => x.id === shiftUpdated.id)] = shiftUpdated;
-    this.myDiaries?.forEach(d => {
+    //this.myDiaries?.forEach(d => {
+      // TODO: esto está pésimo, ver workaround
+      //diary = new Diary(this.myShifts, JSON.parse(d[0].doctor), d[0].specialty, d[0].day, d[0].start, d[0].end, d[0].status);
+      //this.diaryService.update(diary).then(x => console.log(x))
+    //});
+    this.myDiaries?.pipe(take(1)).subscribe((d:any) => {
       // TODO: esto está pésimo, ver workaround
       const diary = new Diary(this.myShifts, JSON.parse(d[0].doctor), d[0].specialty, d[0].day, d[0].start, d[0].end, d[0].status);
       this.diaryService.update(diary).then(x => console.log(x))

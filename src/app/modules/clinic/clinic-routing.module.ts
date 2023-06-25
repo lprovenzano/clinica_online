@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ClinicComponent} from "../../components/clinic/clinic/clinic.component";
-import {SpecialistManagerComponent} from "../../components/clinic/administrator/specialist-manager/specialist-manager.component";
-import {CreateAdminComponent} from "../../components/clinic/administrator/create-admin/create-admin.component";
 import {AdminGuard} from "../../shared/guard/admin.guard";
-import {CreateDiaryComponent} from "../../components/clinic/clinic/specialist/create-diary/create-diary.component";
 import {MyProfileComponent} from "../../components/clinic/my-profile/my-profile.component";
 
 const routes: Routes = [{
@@ -14,15 +11,13 @@ const routes: Routes = [{
       path: 'clinic', component: ClinicComponent
     },
     {
-      path: 'specialist-manager', component: SpecialistManagerComponent,
+      path: 'admin',
+      loadChildren: () => import('../administrator/administrator.module').then(m => m.AdministratorModule),
       canActivate: [AdminGuard]
     },
     {
-      path: 'create-admin', component: CreateAdminComponent,
-      canActivate: [AdminGuard]
-    },
-    {
-      path: 'create-diary', component: CreateDiaryComponent
+      path: 'specialist',
+      loadChildren: () => import('../specialist/specialist.module').then(m => m.SpecialistModule)
     },
     {
       path: 'my-profile', component: MyProfileComponent

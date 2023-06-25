@@ -20,12 +20,6 @@ export class DiaryService {
     return this.diaryRef;
   }
 
-  getAllByIdNumber(idNumber: string) {
-    setTimeout(() => {
-      this.diaryRef.valueChanges().subscribe(x => x.filter(s => JSON.parse(s.doctor).idNumber === idNumber).forEach(x => this.diaries.push(x)));
-    }, 3000);
-  }
-
   create(diary: Diary): any {
     return this.diaryRef.add({...diary});
   }
@@ -55,15 +49,5 @@ export class DiaryService {
       // console.log(doc.id, " => ", doc.data());
       this.diaryRef.doc(doc.id).delete()
     });
-  }
-
-  async getShiftsByStatus(status: string) {
-    let shifts: any[] = [];
-    const q = query(collection(this.db.firestore, this.path), where("shifts", "array-contains", status));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      shifts.push(doc.data());
-    });
-    return shifts[0];
   }
 }
