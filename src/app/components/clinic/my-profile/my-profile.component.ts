@@ -19,7 +19,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   user:any;
   subscriber?:Subscription;
-  history:any[] = []
+  public history:any[] = []
 
 
   constructor(public userProfile: UserprofileService,
