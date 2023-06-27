@@ -1,0 +1,12 @@
+<div *ngIf="this.history.length>0">
+  <div class="card" *ngFor="let item of getKeys()">
+    <div class="card-header">
+      Historia clínica
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Paciente</h5>
+      <p class="card-text">DNI: {{item}}</p>
+      <button class="btn btn-danger" (click)="downloadCsv(getValueFromKey(item), item)">Descargar excel</button>
+    </div>
+  </div>
+</div>
