@@ -27,7 +27,7 @@ export class ListDiaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const user = this.userProfile.getLoggedProfile;
-    this.diariesObservable = this.diaryService.getAll().valueChanges().pipe(
+    this.diariesObservable = this.diaryService.get().pipe(
       map((diary: any[]) => diary.filter(d => JSON.parse(d.doctor).idNumber === user.idNumber))
     )
     this.allDiariesInClinic.emit(this.diariesObservable)

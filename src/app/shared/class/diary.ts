@@ -3,6 +3,7 @@ import {Doctor} from "./doctor";
 import {DiaryStatus} from "../enums/diary-status";
 
 export class Diary {
+  id: string = ''
   shifts: string;
   doctor: string;
   specialty: string;

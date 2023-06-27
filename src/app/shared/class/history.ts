@@ -5,10 +5,11 @@ export class History {
   weight: number;
   pressure: number;
   temperature: number;
-  additionalInformation:{ [key: string]: string } = {};
+  additionalInformation:any;
+  date:any;
 
 
-  constructor(doctor: string, patient: string, height: number, weight: number, pressure: number, temperature: number, additionalInformation: {}) {
+  constructor(doctor: string, patient: string, height: number, weight: number, pressure: number, temperature: number, additionalInformation: any, date:any) {
     this.doctor = doctor;
     this.patient = patient;
     this.height = height;
@@ -16,5 +17,6 @@ export class History {
     this.pressure = pressure;
     this.temperature = temperature;
     this.additionalInformation = additionalInformation;
+    this.date = date;
   }
 }

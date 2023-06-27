@@ -15,6 +15,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
+import { UsersComponent } from './components/clinic/administrator/users/users.component';
 
 @NgModule({
   declarations: [

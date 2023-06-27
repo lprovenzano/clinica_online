@@ -1,28 +1,34 @@
 <div class="row">
-  <div class="col-lg-4">
-  </div>
-  <div class="col-lg-4">
-    <h2>{{this.userProfile.getLoggedProfile.firstName}} {{this.userProfile.getLoggedProfile.lastName}}</h2>
-    <img *ngFor="let img of this.userProfile.getLoggedProfile.profilePhotos" width="200" height="200"
+  <div class="col-lg-6 scale-up-ver-bottom">
+    <h2>{{this.user.firstName}} {{this.user.lastName}}</h2>
+    <img *ngFor="let img of this.user.profilePhotos" width="200" height="200"
          class="img-thumbnail" [src]=img/>
-    <ul *ngIf="this.userProfile.getLoggedProfile.role === 'PATIENT'">
-      <li><b>DNI:</b> {{this.userProfile.getLoggedProfile.idNumber}}</li>
-      <li><b>Edad:</b> {{this.userProfile.getLoggedProfile.age}}</li>
+    <ul *ngIf="this.user.role === 'PATIENT'">
+      <li><b>DNI:</b> {{this.user.idNumber}}</li>
+      <li><b>Edad:</b> {{this.user.age}}</li>
       <li>Obra
-        Social: {{this.userProfile.getLoggedProfile.socialWork}}</li>
+        Social: {{this.user.socialWork}}</li>
     </ul>
-    <ul *ngIf="this.userProfile.getLoggedProfile.role === 'SPECIALIST'">
-      <li><b>DNI:</b> {{this.userProfile.getLoggedProfile.idNumber}}</li>
-      <li><b>Edad:</b> {{this.userProfile.getLoggedProfile.age}}</li>
+    <ul *ngIf="this.user.role === 'SPECIALIST'">
+      <li><b>DNI:</b> {{this.user.idNumber}}</li>
+      <li><b>Edad:</b> {{this.user.age}}</li>
       <li><b>Especialidades:</b>
         <ol>
-          <li *ngFor="let specialty of this.userProfile.getLoggedProfile.specialties">
+          <li *ngFor="let specialty of this.user.specialties">
             {{specialty}}</li>
         </ol>
       </li>
-
     </ul>
-  </div><!-- /.col-lg-4 -->
-  <div class="col-lg-4">
-  </div><!-- /.col-lg-4 -->
+  </div>
+  <div class="col-lg-6">
+    <h1>Historia clínica</h1>
+    <div *ngIf="this.user.role === 'PATIENT'">
+      <ul *ngFor='let value of history'>
+        <li>{{getHistoryTitle(value)}}</li>
+    </ul>
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary" type="button" (click)="createPDF()" [disabled]="this.history.length<=0">Descargar PDF</button>
+    </div>
+    </div>
+  </div>
 </div>

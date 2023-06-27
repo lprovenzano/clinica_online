@@ -8,9 +8,7 @@ import {ShiftStatus} from "../../../../../shared/enums/shift-status";
 import {Survey} from "../../../../../shared/class/survey";
 import {DateService} from "../../../../../shared/services/date.service";
 import {Doctor} from "../../../../../shared/class/doctor";
-import {DiagnosticCategoryLabel} from "@angular/compiler-cli/src/ngtsc/core/api";
 import {DiaryStatus} from "../../../../../shared/enums/diary-status";
-import * as Console from "console";
 import Swal from "sweetalert2";
 import {Router} from "@angular/router";
 import moment from "moment";
@@ -35,8 +33,7 @@ export class CreateDiaryComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               public userprofileService: UserprofileService,
               private diaryService: DiaryService,
-              private dateService: DateService,
-              private router: Router) {
+              private dateService: DateService) {
     this.formGroup = this.formBuilder.group(this.controls);
   }
 

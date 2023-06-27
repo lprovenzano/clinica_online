@@ -49,12 +49,11 @@ export class PatientShiftRequestListComponent implements OnInit {
     const index = allShifts.indexOf(allShifts.find((x: any) => x.id === shift.id))
     allShifts[index] = shiftTaken;
     const diaryStatus = allShifts.some((x:any) => x.status === ShiftStatus.AVAILABLE) ? DiaryStatus.AVAILABLE : DiaryStatus.FULL;
-    const newDiary = new Diary(allShifts, JSON.parse(diary[0].doctor), diary[0].specialty, diary[0].day, diary[0].start, diary[0].end, diaryStatus)
+    let newDiary = new Diary(allShifts, JSON.parse(diary[0].doctor), diary[0].specialty, diary[0].day, diary[0].start, diary[0].end, diaryStatus)
+    newDiary.id = diary[0].id;
     setTimeout(async () => {
-      await this.diaryService.delete(newDiary)
+      await this.diaryService.update(newDiary)
         .then(x => {
-          this.diaryService.create(newDiary)
-          console.log('UPDATED: ', newDiary)
           Swal.fire({
             icon: 'success',
             showCancelButton: false,

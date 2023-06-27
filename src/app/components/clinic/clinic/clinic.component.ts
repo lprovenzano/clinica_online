@@ -28,14 +28,14 @@ export class ClinicComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.suscriber?.unsubscribe();
+    this.diaries = new Observable();
   }
 
   ngOnInit(): void {
-    this.suscriber = this.diaryService.getAll().get().subscribe(diary => {
-        diary.docs
-          .map(d => {
-            this.allDiariesClinic.add(d.data())
-            this.allShiftClinic.add(JSON.parse(d.data().shifts))
+    this.suscriber = this.diaryService.get().subscribe((diary:any) => {
+        diary.map((d:any) => {
+            this.allDiariesClinic.add(d)
+            this.allShiftClinic.add(JSON.parse(d.shifts))
           })
       }
     );

@@ -36,11 +36,10 @@ export class PatientShiftListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     setTimeout(() => {
       const user = this.userProfile.getLoggedProfile;
-      const diaries = this.diaryService.getAll().valueChanges();
-      this.suscriber = diaries.subscribe(diary => {
-          diary.map(d => {
-            JSON.parse(d.shifts)
-              .forEach((shift: Shift) => {
+      this.suscriber = this.diaryService.get().subscribe(diary => {
+          diary.map((d:any) => {
+            const shifts =  JSON.parse(d.shifts) as []
+              shifts.forEach((shift: Shift) => {
                 try {
                   if (JSON.parse(shift.patient).idNumber === user.idNumber) {
                     shift.specialist = JSON.parse(d.doctor).firstName + ' ' + JSON.parse(d.doctor).lastName;

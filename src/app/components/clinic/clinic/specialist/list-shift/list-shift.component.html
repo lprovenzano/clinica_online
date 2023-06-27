@@ -14,7 +14,7 @@
     <tbody>
     <tr *ngFor="let shift of this.myShifts | shiftspecialty:filterCriteria(this.filter)">
       <td>{{shift?.patient | patientView:''}}</td>
-      <td>{{shift?.date | date:'medium' }}</td>
+      <td>{{shift?.date | date:'full' }}</td>
       <td>{{shift?.specialty}}</td>
       <td><span [ngClass]="shift?.status | shiftcolor" class="badge rounded-pill">{{shift?.status | shiftstatus}}</span></td>
       <td>

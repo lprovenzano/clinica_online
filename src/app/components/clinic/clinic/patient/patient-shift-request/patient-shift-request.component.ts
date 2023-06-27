@@ -32,9 +32,9 @@ export class PatientShiftRequestComponent implements OnInit, OnDestroy {
 
   private loadData() {
     const today = moment().toDate();
-    this.subscription = this.diaryService.getAll().valueChanges()
+    this.subscription = this.diaryService.get()
       .subscribe(diary => {
-        diary.map(d => {
+        diary.map((d:any) => {
             this.imageService.getByIdNumber(JSON.parse(d.doctor).idNumber).then(photo => {
               this.allShiftsClinic.emit(JSON.parse(d.shifts));
               const shifts = JSON.parse(d.shifts).filter((shift: Shift) => moment(shift.date).isSameOrAfter(today) && shift.status === ShiftStatus.AVAILABLE);

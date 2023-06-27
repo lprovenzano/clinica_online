@@ -1,10 +1,11 @@
+import { map, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, Pipe, OnDestroy } from '@angular/core';
 import {Shift} from "../../../../../shared/class/shift";
 import Swal from "sweetalert2";
 import {ShiftStatus} from "../../../../../shared/enums/shift-status";
 import {Diary} from "../../../../../shared/class/diary";
-import { first, take } from 'rxjs/operators';
 import {DateService} from "../../../../../shared/services/date.service";
 import {HistoryService} from "../../../../../shared/services/history.service";
 import {DiaryService} from "../../../../../shared/services/diary.service";
@@ -15,10 +16,11 @@ import {History} from "../../../../../shared/class/history";
   templateUrl: './list-shift.component.html',
   styleUrls: ['./list-shift.component.scss']
 })
-export class ListShiftComponent implements OnInit {
-  myShifts: Shift[] = [];
+export class ListShiftComponent implements OnInit, OnDestroy {
+  myShifts: any[] = [];
   filter: any;
   loading: boolean = false;
+  suscriber?: Subscription;
 
   @Input()
   myDiaries?: Observable<any[]>
@@ -27,23 +29,34 @@ export class ListShiftComponent implements OnInit {
     private diaryService: DiaryService,
     private historyClinic: HistoryService) {
   }
+  ngOnDestroy(): void {
+   this.suscriber?.unsubscribe()
+  }
 
   ngOnInit(): void {
     this.loading = true;
     const today = new Date();
     setTimeout(()=> {
-      this.myDiaries?.subscribe(d => d.map(d => {
-        this.myShifts = JSON.parse(d.shifts).filter((s:any) => new Date(s.date)> today);
+      this.myDiaries?.subscribe(d =>
+        d.map(d => {
+        this.myShifts = []
+        const shift = JSON.parse(d.shifts).filter((s:any) => new Date(s.date)> today) as []
+        shift.forEach((x:any) => {
+          x.diaryId = d.id;
+          this.myShifts.push(x)
+        })
         this.loading = false;
       }));
-    }, 1000)
+    }, 250)
   }
 
   filterCriteria(filter: any) {
     return filter;
   }
 
-  async finishShift(shift: Shift) {
+  async finishShift(shift: any) {
+    console.log('SHIFT FINISHED: ')
+    console.log(shift)
     const {value: formValues} = await Swal.fire({
       title: '',
       html:
@@ -67,6 +80,7 @@ export class ListShiftComponent implements OnInit {
           (document.getElementById('swal-input4') as HTMLInputElement).value,
           (document.getElementById('swal-input5') as HTMLInputElement).value,
           (document.getElementById('swal-input6') as HTMLInputElement).value,
+          (document.getElementById('swal-input7') as HTMLInputElement).value,
           (document.getElementById('swal-input8') as HTMLInputElement).value,
           (document.getElementById('swal-input9') as HTMLInputElement).value,
           (document.getElementById('swal-input10') as HTMLInputElement).value,
@@ -79,18 +93,28 @@ export class ListShiftComponent implements OnInit {
       if (formValues.slice(0, 5).filter(x => x.trim().toLowerCase().length === 0).length > 0) {
         await Swal.fire('Hay que completar los campos obligatorios.', '', "error")
       } else {
-        let answers = {
-          review: formValues[0],
-          diagnostic: formValues[1],
-          history: new History('', shift.patient, <any>formValues[3], <any>formValues[2], <any>formValues[5], <any>formValues[4], {})
-        };
-        //const optional1 = formValues[6];
-        //console.log(optional1)
-        answers.history.additionalInformation['optional'] = formValues[7]
-        answers.history.additionalInformation[formValues[8]] = formValues[9]
-        answers.history.additionalInformation[formValues[10]] = formValues[11];
-        //this.historyClinic.save('history', JSON.stringify(answers))
-        this.update(shift, answers, ShiftStatus.FINISHED)
+
+    const diary = this.myDiaries?.pipe(map((d:any) => d.find((x:any) => x.id == shift.diaryId)));
+    this.suscriber = diary?.pipe(take(1)).subscribe((d:any) => {
+      let newDiary = new Diary(this.myShifts, JSON.parse(d.doctor), d.specialty, d.day, d.start, d.end, d.status);
+      newDiary.id = shift.diaryId;
+      newDiary.shifts = ''
+      let map = new Map<string, string>();
+      map.set(formValues[6], formValues[7])
+      map.set(formValues[8], formValues[9])
+      map.set(formValues[10], formValues[11])
+      let history = new History('', shift.patient, <any>formValues[3], <any>formValues[2], <any>formValues[5], <any>formValues[4], '', shift.date);
+      console.log(JSON.stringify(Object.fromEntries(map)))
+      history.additionalInformation = JSON.stringify(Object.fromEntries(map));
+      let answers = {
+        diary: JSON.stringify(newDiary),
+        review: formValues[0],
+        diagnostic: formValues[1],
+        history: JSON.stringify(history)
+      } as any;
+      this.historyClinic.save('history', answers)
+      this.update(shift, answers, ShiftStatus.FINISHED)
+    });
       }
 
     }
@@ -143,21 +167,30 @@ export class ListShiftComponent implements OnInit {
   }
 
   private update(shift: Shift, response: any, status: ShiftStatus) {
-    let shiftUpdated = shift;
+    let shiftUpdated = shift as any;
     shiftUpdated.review = response.review;
     shiftUpdated.diagnostic = response.diagnostic;
     shiftUpdated.status = status;
     this.myShifts[this.myShifts.findIndex(x => x.id === shiftUpdated.id)] = shiftUpdated;
-    //this.myDiaries?.forEach(d => {
-      // TODO: esto está pésimo, ver workaround
-      //diary = new Diary(this.myShifts, JSON.parse(d[0].doctor), d[0].specialty, d[0].day, d[0].start, d[0].end, d[0].status);
-      //this.diaryService.update(diary).then(x => console.log(x))
-    //});
-    this.myDiaries?.pipe(take(1)).subscribe((d:any) => {
-      // TODO: esto está pésimo, ver workaround
-      const diary = new Diary(this.myShifts, JSON.parse(d[0].doctor), d[0].specialty, d[0].day, d[0].start, d[0].end, d[0].status);
-      this.diaryService.update(diary).then(x => console.log(x))
-    });
+    const diary = this.myDiaries?.pipe(map((d:any) => d.find((x:any) => x.id == shiftUpdated.diaryId)));
+    this.suscriber = diary?.pipe(take(1)).subscribe((d:any) => {
+      let newDiary = new Diary(this.myShifts, JSON.parse(d.doctor), d.specialty, d.day, d.start, d.end, d.status);
+      newDiary.id = shiftUpdated.diaryId;
+      setTimeout(async () => {
+        await this.diaryService.update(newDiary)
+          .then(x => {
+            Swal.fire({
+              icon: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6'
+            }).then((result) => {
+              // if (result.isConfirmed) {
+              //    window.location.reload();
+              // }
+            })
+          });
+      }, 1000)
+    })
   }
 
   async seeReview(shift: any) {
