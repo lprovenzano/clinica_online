@@ -1,3 +1,4 @@
+import { LogService } from './../../../../shared/services/log.service';
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../../shared/services/auth.service";
@@ -53,7 +54,7 @@ export class LoginComponent implements OnInit {
     }
   ]
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
     this.formGroup = this.formBuilder.group(this.controls);
   }
 

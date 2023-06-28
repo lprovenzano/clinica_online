@@ -8,6 +8,8 @@ import {UserprofileService} from "./userprofile.service";
 import {ImagestorageService} from "./imagestorage.service";
 import Swal from "sweetalert2";
 import {ImageServiceService} from "./image-service.service";
+import { LogService } from './log.service';
+import moment from 'moment';
 
 
 @Injectable({
@@ -22,7 +24,8 @@ export class AuthService {
     public ngZone: NgZone,
     private userProfileService: UserprofileService,
     private imageStorage: ImagestorageService,
-    private imageService: ImageServiceService
+    private imageService: ImageServiceService,
+    private log: LogService
   ) {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
@@ -54,6 +57,9 @@ export class AuthService {
                 userImages.push(i)
                 setTimeout(() => {
                   if (userProfile.approved) {
+                    const now = moment().format().toString()
+                    let log = {user: user.uid, idNumber: userProfile.idNumber, date: now}
+                    this.log.save('user-metrics', log)
                     this.imageService.create({idNumber: userProfile.idNumber, images: JSON.stringify(userImages)});
                     localStorage.setItem('user-profile', JSON.stringify(userProfile));
                     this.router.navigate(['/clinic'])

@@ -24,6 +24,8 @@
             administrador</a></li>
             <li *ngIf="this.userProfile.getLoggedProfile.role === 'ADMIN'"><a class="dropdown-item"
               [routerLink]="['/users']" href="#">Usuarios</a></li>
+              <li *ngIf="this.userProfile.getLoggedProfile.role === 'ADMIN'"><a class="dropdown-item"
+                [routerLink]="['/metrics']" href="#">Métricas</a></li>
           <li>
             <hr class="dropdown-divider">
           </li>

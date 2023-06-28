@@ -1,3 +1,4 @@
+import { MetricsComponent } from './../../components/clinic/administrator/metrics/metrics.component';
 import { UsersComponent } from './../../components/clinic/administrator/users/users.component';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -13,7 +14,8 @@ import { CreateAdminComponent } from 'src/app/components/clinic/administrator/cr
   declarations: [
     SpecialistManagerComponent,
     CreateAdminComponent,
-    UsersComponent
+    UsersComponent,
+    MetricsComponent
   ],
   imports: [
     CommonModule,

@@ -1,3 +1,4 @@
+import { MetricsComponent } from './../../components/clinic/administrator/metrics/metrics.component';
 import { UsersComponent } from './../../components/clinic/administrator/users/users.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -20,6 +21,10 @@ const routes: Routes = [{
       path: 'users', component: UsersComponent,
       canActivate: [AdminGuard]
     },
+    {
+      path: 'metrics', component: MetricsComponent,
+      canActivate: [AdminGuard]
+    }
   ]
 }];
 
