@@ -1,15 +1,15 @@
 import { SharedModule } from './../shared/shared.module';
-import { SpinnerComponent } from 'src/app/components/utils/spinner/spinner.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SpecialistRoutingModule } from './specialist-routing.module';
 import { CreateDiaryComponent } from 'src/app/components/clinic/clinic/specialist/create-diary/create-diary.component';
+import { PatientHistoryComponent } from 'src/app/components/clinic/clinic/specialist/patient-history/patient-history.component';
 
 
 @NgModule({
-  declarations: [CreateDiaryComponent],
+  declarations: [CreateDiaryComponent, PatientHistoryComponent],
   imports: [
     CommonModule,
     SpecialistRoutingModule,

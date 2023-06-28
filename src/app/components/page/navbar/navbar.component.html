@@ -13,6 +13,9 @@
           <li *ngIf="this.userProfile.getLoggedProfile.role === 'SPECIALIST'"><a class="dropdown-item"
                                                                             [routerLink]="['/create-diary']"
                                                                             href="#">Crear agenda de turnos</a></li>
+          <li *ngIf="this.userProfile.getLoggedProfile.role === 'SPECIALIST'"><a class="dropdown-item"
+                                                                              [routerLink]="['/patient-history']"
+                                                                              href="#">Pacientes</a></li>
           <li *ngIf="this.userProfile.getLoggedProfile.role === 'ADMIN'"><a class="dropdown-item"
                                                                             [routerLink]="['/specialist-manager']"
                                                                             href="#">Gestor de especialistas</a></li>
