@@ -1,0 +1,10 @@
+<div class="card border-danger mb-3 swing-top-left-bck" style="max-width: 18rem;" *ngFor="let item of getKeys(); let i = index">
+  <div class="card-header">Nombre: {{getPatient(i).firstName}}</div>
+  <div class="card-body text-danger">
+    <h5 class="card-title">DNI: {{getPatient(i).idNumber}}</h5>
+    <p>Fecha: {{getHistory(i).date}}</p>
+      <ul class="card-text">
+        <li *ngFor="let info of getAdditionalInformation(i)"> {{info}}</li>
+      </ul>
+  </div>
+</div>
