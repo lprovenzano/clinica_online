@@ -37,6 +37,8 @@ export class ClinicComponent implements OnInit, OnDestroy {
             this.allDiariesClinic.add(d)
             this.allShiftClinic.add(JSON.parse(d.shifts))
           })
+          console.log(this.allDiariesClinic)
+          console.log(this.allShiftClinic)
       }
     );
   }

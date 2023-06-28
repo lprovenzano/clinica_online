@@ -12,6 +12,7 @@ import {DiaryStatus} from "../../../../../shared/enums/diary-status";
 import Swal from "sweetalert2";
 import {Router} from "@angular/router";
 import moment from "moment";
+import { LogService } from 'src/app/shared/services/log.service';
 
 @Component({
   selector: 'app-create-diary',
@@ -33,7 +34,8 @@ export class CreateDiaryComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               public userprofileService: UserprofileService,
               private diaryService: DiaryService,
-              private dateService: DateService) {
+              private dateService: DateService,
+              private log:LogService) {
     this.formGroup = this.formBuilder.group(this.controls);
   }
 
@@ -61,6 +63,12 @@ export class CreateDiaryComponent implements OnInit {
         diary.push(new Diary(shifts, doctor, s, day, from, to, DiaryStatus.AVAILABLE));
       })
     this.diaryService.create(diary[0])
+    let shiftMetric = {
+      specialty: shifts[0].specialty,
+      total: shifts.length,
+      day: this.dateService.getDayByNumber(moment(shifts[0].date).day())
+    }
+    this.log.save('shift-day-metrics', shiftMetric)
     Swal.fire({
       icon: 'success',
       showCancelButton: false,

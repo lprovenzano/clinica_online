@@ -40,7 +40,8 @@ export class ListShiftComponent implements OnInit, OnDestroy {
       this.myDiaries?.subscribe(d =>
         d.map(d => {
         this.myShifts = []
-        const shift = JSON.parse(d.shifts).filter((s:any) => new Date(s.date)> today) as []
+        //const shift = JSON.parse(d.shifts).filter((s:any) => new Date(s.date)> today) as []
+        const shift = JSON.parse(d.shifts)
         shift.forEach((x:any) => {
           x.diaryId = d.id;
           this.myShifts.push(x)

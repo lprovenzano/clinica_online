@@ -32,7 +32,7 @@ export class DateService {
     return shiftsDates;
   }
 
-  getDayByNumber(dayNumber: number){
+  public getDayByNumber(dayNumber: number){
     switch (dayNumber){
       case 1:
         return 'lunes'
