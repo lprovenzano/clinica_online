@@ -4,6 +4,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { LogService } from 'src/app/shared/services/log.service';
 import moment from 'moment';
+import 'chartjs-plugin-datalabels';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-metrics',
@@ -150,4 +153,23 @@ export class MetricsComponent implements OnInit, OnDestroy {
     )
   }
 
+  exportChartToPDF() {
+    const chartElement1 = document.getElementById('MyChart');
+    const chartElement2 = document.getElementById('MyChart2');
+    const chartElement3 = document.getElementById('MyChart3');
+
+    let charts = [chartElement1, chartElement2, chartElement3]
+    charts.forEach(c => {
+      if (c) {
+        html2canvas(c).then(canvas => {
+          const pdf = new jsPDF('p', 'mm', 'a4');
+          const imgData = canvas.toDataURL('image/png');
+          pdf.addImage(imgData, 'PNG', 10, 10, 190, 100);
+          pdf.save('chart.pdf');
+        });
+      } else {
+        console.error('Elemento del gráfico no encontrado');
+      }
+    })
+  }
 }
