@@ -14,21 +14,26 @@ export class MetricsComponent implements OnInit, OnDestroy {
 
   public chart: any;
   public chartShifts: any;
+  public chartShiftsDay:any;
   private userMetrics: any;
   private shiftsMetrics: any;
+  private shiftsMetricsDay: any;
   private subscriber?:Subscription;
   private subscriber2?:Subscription;
+  private subscriber3?:Subscription;
 
   constructor(private log:LogService) { }
   ngOnDestroy(): void {
     this.subscriber?.unsubscribe()
     this.subscriber2?.unsubscribe()
+    this.subscriber3?.unsubscribe()
   }
 
 
   ngOnInit(): void {
     this.initUserMetrics();
     this.initShiftsMetrics();
+    this.initShiftsDayMetrics();
   }
 
   createUserChart(){
@@ -96,6 +101,28 @@ export class MetricsComponent implements OnInit, OnDestroy {
     });
   }
 
+  createShiftDaysChart(){
+    const labels = this.shiftsMetrics.map((obj:any) => obj.day);
+    const dataValues = this.shiftsMetrics.map((obj:any) => obj.total);
+
+    this.chartShiftsDay = new Chart("MyChart3", {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Turnos por día",
+            data: dataValues,
+            backgroundColor: 'blue'
+          }
+        ]
+      },
+      options: {
+        aspectRatio: 2.5
+      }
+    });
+  }
+
   initUserMetrics(){
     this.subscriber = this.log.get('user-metrics').subscribe(
       x => {
@@ -106,10 +133,19 @@ export class MetricsComponent implements OnInit, OnDestroy {
   }
 
   initShiftsMetrics(){
-    this.subscriber2 = this.log.get('shift-metrics').subscribe(
+    this.subscriber2 = this.log.get('shift-day-metrics').subscribe(
       x => {
         this.shiftsMetrics = x;
         this.createShiftChart();
+      }
+    )
+  }
+
+  initShiftsDayMetrics(){
+    this.subscriber3 = this.log.get('shift-day-metrics').subscribe(
+      x => {
+        this.shiftsMetricsDay = x;
+        this.createShiftDaysChart();
       }
     )
   }
